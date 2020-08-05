@@ -1,4 +1,4 @@
-# gif-auto-generator
+# simple-gif-generator
 
 A python script for gif generation.
 
