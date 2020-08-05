@@ -5,9 +5,9 @@ from PIL import Image, ImageChops
 
 IMG_FOLDER = sys.argv[1]
 SAVE_PATH = sys.argv[2]
-TRIM_SET = False
+TRIM_SET = True
 
-# Trim all the images in the IMG_FOLDER by the common minimum bbox
+''' Trim all images in the IMG_FOLDER by the common minimum bbox '''
 def trim_set(imgs):
 	bboxs = []
 	for img in imgs:
@@ -21,14 +21,11 @@ def trim_set(imgs):
 	common_bbox[1] = np.min(bboxs, axis=0)[1]
 	common_bbox[2] = np.max(bboxs, axis=0)[2]
 	common_bbox[3] = np.max(bboxs, axis=0)[3]
-
 	imgs_cropped = []
 	for img in imgs:
 		img = img.crop(common_bbox)
 		imgs_cropped.append(img)
-
 	return imgs_cropped
-
 
 if __name__ == "__main__":
 	images = []
@@ -38,7 +35,7 @@ if __name__ == "__main__":
 		if file_name.endswith(('.png','.jpg','.jpeg')):
 			file_path = os.path.join(IMG_FOLDER, file_name)
 			img = Image.open(file_path)
-
+			''' Keep transparency '''
 			if img.mode == 'RGBA':
 				alpha = img.getchannel('A')
 				# Convert the image into P mode but only use 255 colors in the palette out of 256
@@ -49,9 +46,7 @@ if __name__ == "__main__":
 				img.paste(255, mask)
 				# The transparency index is 255
 				img.info['transparency'] = 255
-			
 			images.append(img)
-
 	if TRIM_SET:
 		images = trim_set(images)
 	images[0].save(SAVE_PATH, save_all=True, append_images=images[1:], duration=100, loop=0)
