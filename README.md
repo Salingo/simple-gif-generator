@@ -2,10 +2,16 @@
 
 A python script for gif generation.
 
-Make sure you have installed Pillow: `pip install Pillow`
+## Instructions
+Make sure you have installed Pillow(generate from images) and moviepy(generate from videos):
 
-Put all frames in a folder, the script will generate the gif follow the order of the file names.
+`pip install Pillow moviepy`
 
-Additionally, this script can help trim the redundant boundary of the images. Set `TRIM_SET` to `True` to enable this feature.
+To convert videos to gifs, put all videos in a source folder, the script will generate gifs for each video. You can customize the fps, speed, resolution, start/end time in the code.
 
-Use example: `python gif.py ./my_images ./output.gif`
+To convert image frames to gif, put all images in a source folder, the script will generate gif follow the order of the file names.
+Additionally, this script can trim the redundant background of the images. Set `TRIM_SET` to `True` to enable this feature.
+
+## Usage
+
+`python gif.py <source folder> <0 or 1>`, 0 for image mode, 1 for video mode.
