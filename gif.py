@@ -6,10 +6,10 @@ from moviepy.editor import VideoFileClip
 
 SOURCE_FOLDER = sys.argv[-2]
 VIDEO_MODE = int(sys.argv[-1])
-TRIM_SET = True
+TRIM_GROUP_MODE = False
 
 ''' Trim all images in the SOURCE_FOLDER by the common minimum bbox '''
-def trim_set(imgs):
+def trim_group(imgs):
 	bboxs = []
 	for img in imgs:
 		bg = Image.new(img.mode, img.size, img.getpixel((0,0)))
@@ -55,12 +55,12 @@ if __name__ == "__main__":
 					# Convert the image into P mode but only use 255 colors in the palette out of 256
 					image = image.convert('RGB').convert('P', palette=Image.ADAPTIVE, colors=255)
 					# Set all pixel values below 128 to 255 , and the rest to 0
-					mask = Image.eval(alpha, lambda a: 255 if a <=128 else 0)
+					mask = Image.eval(alpha, lambda a: 255 if a <= 128 else 0)
 					# Paste the color of index 255 and use alpha as a mask
 					image.paste(255, mask)
 					# The transparency index is 255
 					image.info['transparency'] = 255
 				images.append(image)
-		if TRIM_SET:
-			images = trim_set(images)
-		images[0].save(os.path.join(SOURCE_FOLDER, file_names[0].split('.')[0]+".gif"), save_all=True, append_images=images[1:], duration=100, loop=0)
+		if TRIM_GROUP_MODE:
+			images = trim_group(images)
+		images[0].save(os.path.join(SOURCE_FOLDER, file_names[0].split('.')[0]+".gif"), save_all=True, append_images=images[1:], duration=300, loop=0, disposal=2)
